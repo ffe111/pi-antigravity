@@ -1526,7 +1526,7 @@ const defaultPiHarnessPrompt = buildRequest(
 );
 assert.equal(
   defaultPiHarnessPrompt.request.systemInstruction.parts[0]?.text,
-  "You are a coding assistant running inside your development environment. Help users inspect files, run commands, and modify code.",
+  "You are a helpful assistant running inside your development environment. Help users inspect files, run commands, and modify code.",
 );
 
 const shortPiPrompt = buildRequest(
@@ -1541,7 +1541,23 @@ const shortPiPrompt = buildRequest(
 );
 assert.equal(
   shortPiPrompt.request.systemInstruction.parts[0]?.text,
-  "You are a coding assistant running inside your development environment. Be brief.",
+  "You are a helpful assistant running inside your development environment. Be brief.",
+);
+
+const codemodeDocsPrompt = buildRequest(
+  flash37Model,
+  {
+    ...dummyContext,
+    systemPrompt:
+      "<tools>\n- codemode: Run JavaScript that calls other tools\n</tools>\n<docs>\n- When asked about: MCP servers (docs/mcp.md), codemode scripts and non-LLM models such as classifiers and image models (docs/codemode.md)\n</docs>",
+  },
+  "test-proj",
+  {},
+  "gemini-3.7-flash-low",
+);
+assert.equal(
+  codemodeDocsPrompt.request.systemInstruction.parts[0]?.text,
+  "<tools>\n- codemode: Run JavaScript that calls other tools\n</tools>\n<docs>\n- When asked about: MCP servers (docs/mcp.md), codemode scripts (docs/codemode.md), non-LLM models such as classifiers and image models (docs/codemode.md)\n</docs>",
 );
 
 const unrelatedIdentifierPrompt = buildRequest(

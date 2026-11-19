@@ -941,19 +941,27 @@ function mapToolChoiceMode(
 export function sanitizeSystemPrompt(text: string): string {
   return text
     .replace(
+      /coding assistant running inside pi,\s*a coding agent harness/gi,
+      "helpful assistant running inside your development environment",
+    )
+    .replace(
       /running inside pi,\s*a coding agent harness/gi,
       "running inside your development environment",
     )
     .replace(/inside pi,\s*a coding agent harness/gi, "inside your development environment")
     .replace(
       /(coding assistant )running inside pi(?=[.,!?;:\s]|$)(?!\.\w)/gi,
-      "$1running inside your development environment",
+      "helpful assistant running inside your development environment",
     )
     .replace(
       /(coding agent )inside pi(?=[.,!?;:\s]|$)(?!\.\w)/gi,
       "$1inside your development environment",
     )
-    .replace(/\bpractical,\s*and tool-aware\./gi, "practical, and tool aware.");
+    .replace(/\bpractical,\s*and tool-aware\./gi, "practical, and tool aware.")
+    .replace(
+      /codemode scripts and non-LLM models/gi,
+      "codemode scripts (docs/codemode.md), non-LLM models",
+    );
 }
 
 /** Exported for unit tests. */
